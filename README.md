@@ -19,6 +19,12 @@
 -   **Тестирование:** `xUnit`, `NSubstitute`
 -   **Развертывание:** `Docker`
 
+## Скриншоты работы
+![image](https://github.com/user-attachments/assets/8c2fa976-a3c8-4502-b4a6-1cc13ef3f5d3)
+![image](https://github.com/user-attachments/assets/f613736d-63df-4785-8204-c29b10755b27)
+![image](https://github.com/user-attachments/assets/1a2b84d5-eb1a-4a81-8f66-1553d1e7112b)
+
+
 ## Локальный запуск
 
 ### Требования
