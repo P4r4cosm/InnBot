@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>dotnet-InnBot-f5844606-64ac-4829-95fb-277236674149</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,4 +19,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
+        <ItemGroup>
+          <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+          </Content>
+        </ItemGroup>
 </Project>
