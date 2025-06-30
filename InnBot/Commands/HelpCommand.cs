@@ -17,7 +17,7 @@ public class HelpCommand: ICommand
         helpText.AppendLine("`/start` - Начало работы и приветствие");
         helpText.AppendLine("`/help` - Показать это сообщение со списком команд");
         helpText.AppendLine("`/hello` - Информация об авторе бота");
-        helpText.AppendLine("`/inn <ИНН1> <ИНН2> ...` - Получить информацию о компаниях по ИНН. Можно указать несколько через пробел.");
+        helpText.AppendLine("`/inn <ИНН1> <ИНН2>...` - Найти компании по ИНН. Разделяйте несколько ИНН пробелом, запятой или точкой с запятой.");
         helpText.AppendLine("`/last` - Повторить последнюю выполненную команду (кроме `/start` и `/help`)");
 
         await botClient.SendMessage(

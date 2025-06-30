@@ -1,6 +1,8 @@
+// InnBot/Services/UpdateHandlerService.cs
 using InnBot.Commands;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace InnBot.Services;
 
@@ -17,28 +19,55 @@ public class UpdateHandlerService
 
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        // Интересуют только сообщения с текстом
-        if (update.Message is not { Text: { } messageText })
-            return;
-
-        // Команда - это первое слово в сообщении
-        var command = messageText.Split(' ')[0];
-
-        try
+        // Используем современный switch для обработки разных типов обновлений
+        var handler = update.Type switch
         {
-            await _commandExecutor.ExecuteCommandAsync(command, update, botClient);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка при выполнении команды {Command}", command);
-            // Тут же можно отправить пользователю сообщение об ошибке
-            await botClient.SendMessage(update.Message.Chat.Id, "Произошла внутренняя ошибка.", cancellationToken: cancellationToken);
-        }
+            UpdateType.Message => HandleMessageAsync(botClient, update.Message!),
+            // Здесь можно добавить обработчики для других типов (CallbackQuery, InlineQuery и т.д.)
+            _ => HandleUnknownUpdateAsync(update)
+        };
+
+        await handler;
     }
 
-    public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    private async Task HandleMessageAsync(ITelegramBotClient botClient, Message message)
     {
-        _logger.LogError(exception, "Ошибка при получении обновлений от Telegram");
+        // Проверяем, что в сообщении есть текст
+        if (message.Text is not { } messageText)
+        {
+            _logger.LogInformation("Получено сообщение без текста в чате {ChatId}", message.Chat.Id);
+            return;
+        }
+
+        var chatId = message.Chat.Id;
+        var userId = message.From?.Id;
+
+        _logger.LogInformation("Получено сообщение '{MessageText}' от пользователя {UserId} в чате {ChatId}", 
+            messageText, userId, chatId);
+
+        // Команда должна начинаться с '/'
+        if (!messageText.StartsWith("/"))
+        {
+            await botClient.SendMessage(
+                chatId: chatId,
+                text: "Я понимаю только команды. Для списка команд используйте /help."
+            );
+            return;
+        }
+        
+        // Извлекаем имя команды (первое слово)
+        var commandName = messageText.Split(' ')[0].ToLower();
+        
+        // Создаем "фальшивый" Update, чтобы передать его в executor.
+        // Это необходимо, т.к. мы уже разделили логику.
+        var update = new Update { Message = message };
+        
+        await _commandExecutor.ExecuteCommandAsync(commandName, update, botClient);
+    }
+
+    private Task HandleUnknownUpdateAsync(Update update)
+    {
+        _logger.LogInformation("Получено обновление неизвестного типа: {UpdateType}", update.Type);
         return Task.CompletedTask;
     }
 }
