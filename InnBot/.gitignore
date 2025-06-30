@@ -1,0 +1,77 @@
+appsettings.json
+# .gitignore для проекта .NET (C#)
+# Этот файл указывает Git, какие файлы и папки игнорировать.
+
+# --- Секреты и конфигурации окружения ---
+# НИКОГДА не коммитьте секреты, ключи API и токены в репозиторий!
+# Используйте appsettings.json для базовой конфигурации, а для локальной
+# разработки — переменные окружения, .NET User Secrets или appsettings.Development.json.
+
+# Файл с настройками для локальной разработки.
+appsettings.Development.json
+
+# Файл с секретами из .NET User Secrets Manager
+secrets.json
+
+# Файлы .env, часто используемые для хранения переменных окружения
+.env
+.env.*
+!/.env.example
+!/.env.template
+
+# Сертификаты и приватные ключи
+*.pfx
+*.key
+
+
+# --- Артефакты сборки .NET / Visual Studio ---
+# Папки с результатами компиляции и промежуточными файлами.
+# Они генерируются автоматически при сборке проекта.
+**/[Bb]in/
+**/[Oo]bj/
+
+
+# --- Файлы, специфичные для IDE ---
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Visual Studio Code (обычно файлы launch.json и tasks.json можно коммитить,
+# но если там есть пользовательские пути, лучше их игнорировать)
+.vscode/
+
+
+# --- Файлы NuGet ---
+# Папка для пакетов в старом формате (современный .NET использует глобальный кэш)
+packages/
+*.nupkg
+
+
+# --- Результаты тестирования и логи ---
+TestResults/
+*.log
+*.log.*
+
+
+# --- Артефакты публикации ---
+# Папки, создаваемые командой `dotnet publish`
+**/[Pp]ublish/
+**/[Aa]rtifacts/
+
+
+# --- Сгенерированные ОС файлы ---
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
